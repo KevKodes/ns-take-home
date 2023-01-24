@@ -1,13 +1,18 @@
 import "./App.css";
+import { Container } from "react-bootstrap";
+import Search from "./search/Search";
+import Track from "./track/Track";
 
 function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
+        <p>Crypto Tracker</p>
       </header>
+      <Container>
+        <Search />
+        <Track />
+      </Container>
     </div>
   );
 }
