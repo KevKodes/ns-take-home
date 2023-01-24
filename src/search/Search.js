@@ -1,9 +1,16 @@
 import React from "react";
 import { useEffect, useState } from "react";
 import { Button, Form } from "react-bootstrap";
+import { getCoinList } from "../api/api";
 
-const Search = () => {
+/*
+  All the coins can be pulled once then filtered every time
+  filter by name and code, limit 5 to display while typing
+  Clicking will clear the search and add to tracker
+*/
+const Search = (coinList, setCoinList) => {
   const [search, setSearch] = useState("BTC-USD");
+  // const [currency, setCurrency] = useState("USD")
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
   const [data, setData] = useState(null);
@@ -11,8 +18,7 @@ const Search = () => {
   // Fetch Coinbase buy prices
   useEffect(() => {
     if (loading) {
-      fetch(`https://api.coinbase.com/v2/prices/${search}/buy`)
-        .then((res) => res.json())
+      getCoinList()
         .then((response) => {
           console.log("response ", response);
           setData(response.data);
@@ -39,9 +45,18 @@ const Search = () => {
   };
 
   return (
-    <>
-      <Form onSubmit={(e) => onSubmit(e)}>
-        <Form.Control type="text" placeholder="Search..."></Form.Control>
+    <div className="p-5">
+      <Form onSubmit={(e) => onSubmit(e)} className="d-flex flex-row">
+        <Form.Control
+          onChange={(e) => setSearch(e.target.value)}
+          type="text"
+          placeholder="Search..."
+        ></Form.Control>
+        {/* <Form.Select onChange={e=>setCurrency(e.target.value)}>
+          <option value="USD">USD</option>
+          <option value="EUR">EUR</option>
+          <option value="GBP">GBP</option>
+        </Form.Select> */}
         <Button variant="primary" type="submit">
           {/* <input type="submit" /> */}
           Submit
@@ -49,7 +64,7 @@ const Search = () => {
       </Form>
       {loading && <p>Loading...</p>}
       {error && <p>{error}</p>}
-    </>
+    </div>
   );
 };
 
