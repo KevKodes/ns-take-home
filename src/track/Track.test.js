@@ -2,8 +2,6 @@ import { render, screen, waitFor } from "@testing-library/react";
 import Track from "./Track";
 import { getCoinPrice } from "../api/api";
 
-// Rendering tests
-
 // Check a coin is rendered when it is fetched
 jest.mock("../api/api");
 describe("Coin tracking table", () => {

@@ -11,7 +11,7 @@ export const getCoinPrice = (name) => {
   );
 };
 
-// Get coin name from search string
+// Get list of available coins to track
 export const getCoinList = (s) => {
   return fetch(`https://api.coinbase.com/v2/currencies/crypto`).then((resp) => {
     if (resp.status === 200) {
