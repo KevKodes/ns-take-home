@@ -1,36 +1,58 @@
-import { render, screen, waitFor } from "@testing-library/react";
+import { render, screen, fireEvent } from "@testing-library/react";
 import Track from "./Track";
-import { getCoinPrice } from "../api/api";
+
+let coinList = null;
+beforeEach(() => {
+  // setup mocked coin list
+  coinList = [
+    {
+      code: "BTC",
+      name: "Bitcoin",
+    },
+    {
+      code: "ETH",
+      name: "Ethereum",
+    },
+  ];
+});
+
+afterEach(() => {
+  // cleanup on exiting
+  coinList = null;
+});
+
+describe("Track component", () => {
+  it("renders with tracked coins", () => {
+    const onRemoveCoin = jest.fn();
+    render(<Track coinList={coinList} onRemoveCoin={onRemoveCoin} />);
+
+    const row = screen.getByTestId("row-BTC");
+    expect(row).toBeInTheDocument();
+  });
+
+  it("renders with no tracked coins", () => {
+    const onRemoveCoin = jest.fn();
+    coinList = null;
+    render(<Track coinList={coinList} onRemoveCoin={onRemoveCoin} />);
+
+    const row = screen.getByTestId("row-empty");
+    expect(row).toBeInTheDocument();
+  });
+});
 
 // Check a coin is rendered when it is fetched
 jest.mock("../api/api");
 describe("Coin tracking table", () => {
-  // After each test clear te mock
-  beforeEach(() => jest.clearAllMocks());
+  // Removes a coin when clicked
+  it("should update the coin list state when remove button is clicked", async () => {
+    const onRemoveCoin = jest.fn();
 
-  it("should render coin name and price when api responds", async () => {
-    // Call the getCoinPrice function
-    getCoinPrice.mockResolvedValue({
-      data: {
-        amount: "1020.25",
-        currency: "USD",
-      },
-    });
+    render(<Track coinList={coinList} onRemoveCoin={onRemoveCoin} />);
 
-    // render the component
-    render(<Track />);
-
-    // See if the mock value is rendered
-    await waitFor(() => {
-      screen.getByText("1020.25");
-    });
-  });
-
-  it("should render error message when api fails", async () => {
-    getCoinPrice.mockResolvedValue({});
-    render(<Track />);
-    await waitFor(() => {
-      screen.getByText("error");
-    });
+    // Get button element and trigger click
+    const button = screen.getByTestId("remove-BTC");
+    expect(button.innerHTML).toBe("x");
+    fireEvent.click(button);
+    expect(onRemoveCoin).toHaveBeenCalledWith("BTC");
   });
 });

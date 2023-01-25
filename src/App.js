@@ -44,8 +44,6 @@ function App() {
     setCoinList(coinList.filter((c) => c.code !== code));
   }
 
-  // Sort tracked coins
-
   return (
     <div className="App">
       <header className="App-header">

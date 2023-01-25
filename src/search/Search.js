@@ -46,6 +46,7 @@ const Search = ({ onAddCoin }) => {
           type="text"
           placeholder="Search..."
           value={searchText}
+          data-testid="search"
         ></Form.Control>
       </Form>
       <div className="position-absolute bg-light">
@@ -59,6 +60,7 @@ const Search = ({ onAddCoin }) => {
                 setSearchText("");
               }}
               className="w-100"
+              data-testid={`result-${x.code}`}
             >
               <Col className="px-4 text-start">{x.code}</Col>
               <Col className="px-4 text-start">{x.name}</Col>

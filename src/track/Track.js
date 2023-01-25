@@ -15,9 +15,9 @@ const Track = ({ coinList, onRefreshCoin, onRemoveCoin }) => {
         </tr>
       </thead>
       <tbody>
-        {coinList.length ? (
+        {coinList?.length ? (
           coinList.map((data) => (
-            <tr key={data.code}>
+            <tr key={data.code} data-testid={`row-${data.code}`}>
               <td className="align-middle">
                 <div className="fw-bold text-primary fs-3">{data.code}</div>
                 <div className="text-secondary">{data.name}</div>
@@ -37,6 +37,7 @@ const Track = ({ coinList, onRefreshCoin, onRemoveCoin }) => {
                 <Button
                   variant="outline-danger"
                   onClick={() => onRemoveCoin(data.code)}
+                  data-testid={`remove-${data.code}`}
                 >
                   x
                 </Button>
@@ -45,7 +46,9 @@ const Track = ({ coinList, onRefreshCoin, onRemoveCoin }) => {
           ))
         ) : (
           <tr>
-            <td colSpan={5}>Select a coin to track</td>
+            <td colSpan={4} data-testid={`row-empty`}>
+              Select a coin to track
+            </td>
           </tr>
         )}
       </tbody>

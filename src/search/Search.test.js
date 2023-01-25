@@ -1,9 +1,10 @@
-import { render, screen, waitFor } from "@testing-library/react";
-import Search from "./Search";
+import { render, screen, fireEvent, waitFor } from "@testing-library/react";
+import { act } from "react-dom/test-utils";
 import { getCurrencyList } from "../api/api";
+import Search from "./Search";
 
 // Mocked coin list data
-const coinData = [
+const coinList = [
   {
     code: "BTC",
     name: "Bitcoin",
@@ -24,21 +25,46 @@ const coinData = [
 
 // Check if full list of coins is returned
 jest.mock("../api/api");
-describe("Coin list", () => {
+describe("Search component", () => {
   beforeEach(() => jest.clearAllMocks());
 
-  it("should fetch a full list of coins", async () => {
-    getCurrencyList.mockResolvedValue(coinData);
-
-    render(<Search />);
-    await waitFor(() => {
-      screen.getByText("Bitcoin");
-    });
-  });
   // Check on the filtering functionality
-  it("should filter values based on search input", () => {
-    getCurrencyList.mockResolvedValue(coinData);
-    render(<Search />);
-    //TODO
+  it("should display coins based on search input", async () => {
+    const onAddCoin = jest.fn();
+    // setCurrencies.mockResolvedValue(coinList)
+
+    getCurrencyList.mockResolvedValue(() => {
+      const fetchResponse = {
+        json: act(() => () => Promise.resolve(coinList)),
+      };
+      return Promise.resolve(fetchResponse);
+    });
+
+    // act(() => {
+    //   getCurrencyList.mockResolvedValue(() =>
+    //     Promise.resolve({
+    //       json: act(() => Promise.resolve(coinList)),
+    //     })
+    //   );
+    // });
+    // jest.spyOn(global, "fetch").mockImplementation(() =>
+    //   Promise.resolve({
+    //     json: () => Promise.resolve(coinList),
+    //   })
+    // );
+    // await act(async () =>{
+    render(<Search onAddCoin={onAddCoin} />);
+    // })
+
+    const searchbar = screen.getByTestId("search");
+    const row = screen.getByTestId("result-BTC");
+
+    // Mock user input
+    fireEvent.change(searchbar, { target: { value: "b" } });
+
+    // Check for results
+    await waitFor(() => {
+      expect(row).toBeInTheDocument();
+    });
   });
 });
