@@ -10,7 +10,7 @@ import { getCurrencyList } from "../api/api";
 */
 const Search = ({ onAddCoin }) => {
   const [searchText, setSearchText] = useState("");
-  const [currencies, setCurrencies] = useState(null);
+  const [currencies, setCurrencies] = useState(null); // trackable coins from CoinBase
   const [results, setResults] = useState(null);
   const [error, setError] = useState(false);
 
@@ -18,7 +18,6 @@ const Search = ({ onAddCoin }) => {
   useEffect(() => {
     getCurrencyList()
       .then((response) => {
-        console.log("response ", response);
         setCurrencies(response.data);
       })
       .catch((err) => {
@@ -36,14 +35,11 @@ const Search = ({ onAddCoin }) => {
         x.code.toLowerCase().includes(s.toLowerCase()) ||
         x.name.toLowerCase().includes(s.toLowerCase())
     );
-    console.log("l", l);
     return l.slice(0, 10);
   };
 
   useEffect(() => {
     if (searchText && currencies) {
-      // Can add a timeout and handle when user is typing
-      console.log("search, curr", searchText, currencies);
       setResults(filterCurrencies(searchText, currencies));
     } else {
       setResults(null);
@@ -57,6 +53,7 @@ const Search = ({ onAddCoin }) => {
           onChange={(e) => setSearchText(e.target.value)}
           type="text"
           placeholder="Search..."
+          value={searchText}
         ></Form.Control>
       </Form>
       <div className="position-absolute bg-light">

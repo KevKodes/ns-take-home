@@ -7,26 +7,49 @@ import { getCoinPrice } from "./api/api";
 
 function App() {
   // List of coins in the tracked table
-  const [coinList, setCoinList] = useState([
-    { code: "BTC", name: "Bitcoin" },
-    { code: "ETH", name: "Ethereum" },
-  ]);
+  const [coinList, setCoinList] = useState([]);
 
-  // Add to tracking list
-  function addCoin(code, name) {
+  // Format the price (currently only USD option)
+  const formatPrice = (x) =>
+    x
+      ? parseFloat(x).toLocaleString("en-US", {
+          style: "currency",
+          currency: "USD",
+        })
+      : "";
+
+  // Add and refresh tracking list
+  function updateList(code, name) {
     getCoinPrice(`${code.toUpperCase()}-USD`).then((response) => {
-      // console.log("price fetch response: ", response);
       const newCoin = {
         code: code,
         name: name,
-        price: response.data.amount,
+        price: formatPrice(response.data.amount),
         timestamp: new Date(),
       };
-      setCoinList([...coinList, newCoin]);
+
+      // If a coin exists, update instead of adding
+      //SPEED UP TODO
+      const idx = coinList.findIndex((x) => x.code === code);
+      if (idx === -1) {
+        setCoinList([...coinList, newCoin]);
+      } else {
+        const updated = coinList.map((c, i) => {
+          if (i === idx) {
+            return newCoin;
+          } else {
+            return c;
+          }
+        });
+        setCoinList(updated);
+      }
     });
   }
 
   // Remove from tracking list
+  function removeFromList(code) {
+    setCoinList(coinList.filter((c) => c.code !== code));
+  }
 
   return (
     <div className="App">
@@ -34,8 +57,12 @@ function App() {
         <p>Crypto Tracker</p>
       </header>
       <Container className="d-flex flex-column align-items-center">
-        <Search onAddCoin={addCoin} />
-        {coinList && <Track coinList={coinList} setCoinList={setCoinList} />}
+        <Search onAddCoin={updateList} />
+        <Track
+          coinList={coinList}
+          onRefreshCoin={updateList}
+          onRemoveCoin={removeFromList}
+        />
       </Container>
     </div>
   );
