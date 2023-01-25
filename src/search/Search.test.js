@@ -35,4 +35,10 @@ describe("Coin list", () => {
       screen.getByText("Bitcoin");
     });
   });
+  // Check on the filtering functionality
+  it("should filter values based on search input", () => {
+    getCurrencyList.mockResolvedValue(coinData);
+    render(<Search />);
+    //TODO
+  });
 });

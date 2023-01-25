@@ -1,6 +1,6 @@
 // Get coin price based on passed in currency initials
-export const getCoinPrice = (name) => {
-  return fetch(`https://api.coinbase.com/v2/prices/${name}/buy`).then(
+export const getCoinPrice = (code) => {
+  return fetch(`https://api.coinbase.com/v2/prices/${code}/buy`).then(
     (resp) => {
       if (resp.status === 200) {
         return resp.json();
