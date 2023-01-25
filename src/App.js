@@ -20,23 +20,27 @@ function App() {
 
   // Add and refresh tracking list
   function updateList(code, name) {
-    getCoinPrice(`${code.toUpperCase()}-USD`).then((response) => {
-      const newCoin = {
-        code: code,
-        name: name,
-        price: formatPrice(response.data.amount),
-        timestamp: new Date(),
-      };
+    getCoinPrice(`${code.toUpperCase()}-USD`)
+      .then((response) => {
+        const newCoin = {
+          code: code,
+          name: name,
+          price: formatPrice(response.data.amount),
+          timestamp: new Date(),
+        };
 
-      // If a coin exists, update instead of adding
-      const idx = coinList.findIndex((x) => x.code === code);
-      if (idx === -1) {
-        setCoinList([...coinList, newCoin]);
-      } else {
-        const updated = coinList.map((c, i) => (i === idx ? newCoin : c));
-        setCoinList(updated);
-      }
-    });
+        // If a coin exists, update instead of adding
+        const idx = coinList.findIndex((x) => x.code === code);
+        if (idx === -1) {
+          setCoinList([...coinList, newCoin]);
+        } else {
+          const updated = coinList.map((c, i) => (i === idx ? newCoin : c));
+          setCoinList(updated);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }
 
   // Remove from tracking list

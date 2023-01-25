@@ -39,7 +39,7 @@ const Search = ({ onAddCoin }) => {
   }, [searchText, currencies]);
 
   return (
-    <div className="p-5 w-50">
+    <div className="py-5 w-25rem">
       <Form className="d-flex flex-row">
         <Form.Control
           onChange={(e) => setSearchText(e.target.value)}
@@ -49,7 +49,7 @@ const Search = ({ onAddCoin }) => {
           data-testid="search"
         ></Form.Control>
       </Form>
-      <div className="position-absolute bg-light">
+      <div className="position-absolute bg-light w-25rem">
         {results &&
           results.map((x) => (
             <Row

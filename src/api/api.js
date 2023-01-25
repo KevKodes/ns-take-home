@@ -1,14 +1,16 @@
 // Get coin price based on passed in currency initials
 export const getCoinPrice = (code) => {
-  return fetch(`https://api.coinbase.com/v2/prices/${code}/buy`).then(
-    (resp) => {
+  return fetch(`https://api.coinbase.com/v2/prices/${code}/buy`)
+    .then((resp) => {
       if (resp.status === 200) {
         return resp.json();
       } else {
         throw new Error("Invalid response");
       }
-    }
-  );
+    })
+    .catch((err) => {
+      console.log("coin price error: ", err);
+    });
 };
 
 // Get list of available coins to track

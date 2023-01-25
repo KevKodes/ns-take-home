@@ -41,7 +41,6 @@ describe("Track component", () => {
 });
 
 // Check a coin is rendered when it is fetched
-jest.mock("../api/api");
 describe("Coin tracking table", () => {
   // Removes a coin when clicked
   it("should update the coin list state when remove button is clicked", async () => {
