@@ -2,8 +2,6 @@ import React from "react";
 import { Button, Table } from "react-bootstrap";
 
 const Track = ({ coinList, onRefreshCoin, onRemoveCoin }) => {
-  // Can reorder the coins
-
   return (
     <Table striped>
       <thead>
