@@ -1,6 +1,6 @@
 import { render, screen, waitFor } from "@testing-library/react";
 import Search from "./Search";
-import { getCoinList } from "../api/api";
+import { getCurrencyList } from "../api/api";
 
 // Mocked coin list data
 const coinData = [
@@ -28,7 +28,7 @@ describe("Coin list", () => {
   beforeEach(() => jest.clearAllMocks());
 
   it("should fetch a full list of coins", async () => {
-    getCoinList.mockResolvedValue(coinData);
+    getCurrencyList.mockResolvedValue(coinData);
 
     render(<Search />);
     await waitFor(() => {

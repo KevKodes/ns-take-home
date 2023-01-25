@@ -12,7 +12,7 @@ export const getCoinPrice = (name) => {
 };
 
 // Get list of available coins to track
-export const getCoinList = (s) => {
+export const getCurrencyList = (s) => {
   return fetch(`https://api.coinbase.com/v2/currencies/crypto`).then((resp) => {
     if (resp.status === 200) {
       return resp.json();
