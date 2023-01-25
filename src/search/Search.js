@@ -3,11 +3,6 @@ import { useEffect, useState } from "react";
 import { Row, Col, Form } from "react-bootstrap";
 import { getCurrencyList } from "../api/api";
 
-/*
-  All the coins can be pulled once then filtered every time
-  filter by name and code, limit 5 to display while typing
-  Clicking will clear the search and add to tracker
-*/
 const Search = ({ onAddCoin }) => {
   const [searchText, setSearchText] = useState("");
   const [currencies, setCurrencies] = useState(null); // trackable coins from CoinBase
@@ -23,9 +18,6 @@ const Search = ({ onAddCoin }) => {
       .catch((err) => {
         setError(err.message);
       });
-    // .finally(() => {
-    //   setLoading(false);
-    // });
   }, []);
 
   // Update search results when search changes

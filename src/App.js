@@ -29,18 +29,11 @@ function App() {
       };
 
       // If a coin exists, update instead of adding
-      //SPEED UP TODO
       const idx = coinList.findIndex((x) => x.code === code);
       if (idx === -1) {
         setCoinList([...coinList, newCoin]);
       } else {
-        const updated = coinList.map((c, i) => {
-          if (i === idx) {
-            return newCoin;
-          } else {
-            return c;
-          }
-        });
+        const updated = coinList.map((c, i) => (i === idx ? newCoin : c));
         setCoinList(updated);
       }
     });
@@ -50,6 +43,8 @@ function App() {
   function removeFromList(code) {
     setCoinList(coinList.filter((c) => c.code !== code));
   }
+
+  // Sort tracked coins
 
   return (
     <div className="App">
